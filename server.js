@@ -29,7 +29,7 @@ function start() {
             name: "action",
             type: "list",
             message: "What would you like to do?",
-            choices: ["View All Employees", "View All Employees by Department", "View All Employees by Manager", "Add Employee", "Remove Employee", "Update Employee Role", "Update Employee Manager", "View All Roles", "View All Departments", "Add Department", "Add Role"]
+            choices: ["View All Employees", "View All Employees by Department", "Add Employee", "Remove Employee", "Update Employee Role", "View Utilized Budget of Department", "View All Roles", "View All Departments", "Add Department", "Add Role"]
         })
         .then(function (answer) {
 
@@ -59,8 +59,6 @@ function start() {
                             });
 
                         });
-                    break;
-                case "View All Employees by Manager":
                     break;
                 case "Add Employee":
                     inquirer.prompt([
@@ -97,6 +95,19 @@ function start() {
                     break;
 
                 case "Remove Employee":
+                    inquirer.prompt({
+                        name: "emp_id",
+                        type: "input",
+                        message: "Please enter the id of the employee to remove:"
+                    })
+                        .then(function (answer) {
+                            connection.query(queries.removeEmp(), answer.emp_id, function (err, results) {
+                                if (err) throw err;
+                                console.log(`Employee has been removed.`);
+                                start();
+                            });
+                        });
+
                     break;
                 case "Update Employee Role":
                     inquirer.prompt([
@@ -121,9 +132,24 @@ function start() {
 
                         });
                     break;
+                case "View Utilized Budget of Department":
+                    inquirer.prompt(
+                        {
+                            name: "dept_id",
+                            type: "input",
+                            message: "Enter the department id:"
+                        }
+                    )
+                        .then(function (answer) {
 
-                    break;
-                case "Update Employee Manager":
+                            connection.query(queries.budgetTotal(), answer.dept_id, function (err, results) {
+                                if (err) throw err;
+                                console.log("\n" + "-------------------------------------------------");
+                                const result = JSON.stringify(results[0]["SUM(salary)"]);
+                                console.log(`The total utilized budget of that department is: ${result}`);
+                                start();
+                            });
+                        });
                     break;
                 case "View All Roles":
                     connection.query(queries.viewAllRoles(), function (err, results) {

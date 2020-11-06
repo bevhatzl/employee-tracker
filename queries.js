@@ -76,6 +76,19 @@ const updateRole = function () {
     return query;
 }
 
+const removeEmp = function () {
+    const query =
+        'DELETE FROM employee WHERE id = ?';
+    return query;
+}
+
+const budgetTotal = function () {
+    const query =
+        'SELECT SUM(salary) from role ' +
+        'WHERE department_id = ?';
+    return query;
+}
+
 module.exports = {
 
     viewAll: viewAll,
@@ -85,5 +98,7 @@ module.exports = {
     addDept: addDept,
     addRole: addRole,
     addEmployee: addEmployee,
-    updateRole: updateRole
+    updateRole: updateRole,
+    removeEmp: removeEmp,
+    budgetTotal: budgetTotal
 };
