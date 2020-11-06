@@ -4,6 +4,8 @@ const cTable = require('console.table');
 // To hide password and private details
 require('dotenv').config();
 
+const queries = require("./queries.js");
+
 const connection = mysql.createConnection({
     host: "localhost",
     port: 3306,
@@ -16,10 +18,54 @@ const connection = mysql.createConnection({
 connection.connect(function (err) {
     if (err) throw err;
     // run the start function after the connection is made to prompt the user
-    // start();
-    connection.query("SELECT * FROM department", function (err, data) {
-        // if (err) throw err;
-        console.log(data);
-    });
-
+    start();
 });
+
+
+
+function start() {
+    inquirer
+        .prompt({
+            name: "action",
+            type: "list",
+            message: "What would you like to do?",
+            choices: ["View All Employees", "View All Employees by Department", "View All Employees by Manager", "Add Employee", "Remove Employee", "Update Employee Role", "Update Employee Manager", "View All Roles"]
+        })
+        .then(function (answer) {
+
+            switch (answer.action) {
+                case "View All Employees":
+
+                    queries.viewAll();
+                    start();
+                    break;
+                case "View All Employees by Department":
+
+                    break;
+                case "View All Employees by Manager":
+                    break;
+                case "Add Employee":
+
+                    break;
+                case "Remove Employee":
+                    break;
+                case "Update Employee Role":
+                    break;
+                case "Update Employee Manager":
+                    break;
+                case "View All Roles":
+                    break;
+                default:
+                    connection.end();
+            }
+
+
+        });
+}
+
+
+// // for testing
+// connection.query("SELECT * FROM department", function (err, data) {
+//     if (err) throw err;
+//     console.log(data);
+// });
