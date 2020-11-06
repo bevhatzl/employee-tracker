@@ -3,9 +3,10 @@ const inquirer = require("inquirer");
 const cTable = require('console.table');
 // To hide password and private details
 require('dotenv').config();
-
+// Importing from queries.js file
 const queries = require("./queries.js");
 
+// Using variable names for user and password, using the dotenv package
 const connection = mysql.createConnection({
     host: "localhost",
     port: 3306,
@@ -21,8 +22,6 @@ connection.connect(function (err) {
     start();
 });
 
-
-
 function start() {
     inquirer
         .prompt({
@@ -32,19 +31,18 @@ function start() {
             choices: ["View All Employees", "View All Employees by Department", "Add Employee", "Remove Employee", "Update Employee Role", "View Utilized Budget of Department", "View All Roles", "View All Departments", "Add Department", "Add Role"]
         })
         .then(function (answer) {
-
             switch (answer.action) {
                 case "View All Employees":
+                    // Returns all employee names, id, title, manager id, department name and salary.
                     connection.query(queries.viewAll(), function (err, results) {
                         if (err) throw err;
                         console.log("\n" + "------------------------------------------------------------------------------------------------------");
                         console.table(results);
                         start();
                     });
-
                     break;
-
                 case "View All Employees by Department":
+                    // Takes in a department id and returns employee name, id, title, manager id, department name and salary just for employees in that department.
                     inquirer.prompt({
                         name: "department",
                         type: "input",
@@ -57,10 +55,10 @@ function start() {
                                 console.table(results);
                                 start();
                             });
-
                         });
                     break;
                 case "Add Employee":
+                    // Takes new employee name, role id and manager id and inserts to the DB.
                     inquirer.prompt([
                         {
                             name: "first_name",
@@ -90,11 +88,10 @@ function start() {
                                 console.log(`New Employee added: ${answer.first_name} ${answer.last_name} \n`);
                                 start();
                             });
-
                         });
                     break;
-
                 case "Remove Employee":
+                    // Takes in employee id and deletes the employee from the DB.
                     inquirer.prompt({
                         name: "emp_id",
                         type: "input",
@@ -107,9 +104,9 @@ function start() {
                                 start();
                             });
                         });
-
                     break;
                 case "Update Employee Role":
+                    // Takes in employee id and the new role id for the employee and updates the role.
                     inquirer.prompt([
                         {
                             name: "emp_id",
@@ -129,10 +126,10 @@ function start() {
                                 console.log(`The employee's role has been updated. \n`);
                                 start();
                             });
-
                         });
                     break;
                 case "View Utilized Budget of Department":
+                    // Takes in department id and sums the salaries of all employees in that department.
                     inquirer.prompt(
                         {
                             name: "dept_id",
@@ -141,10 +138,10 @@ function start() {
                         }
                     )
                         .then(function (answer) {
-
                             connection.query(queries.budgetTotal(), answer.dept_id, function (err, results) {
                                 if (err) throw err;
                                 console.log("\n" + "-------------------------------------------------");
+                                // To convert from the object to a string
                                 const result = JSON.stringify(results[0]["SUM(salary)"]);
                                 console.log(`The total utilized budget of that department is: ${result}`);
                                 start();
@@ -152,6 +149,7 @@ function start() {
                         });
                     break;
                 case "View All Roles":
+                    // Returns role id, title, salary and department name for all roles.
                     connection.query(queries.viewAllRoles(), function (err, results) {
                         if (err) throw err;
                         console.log("\n" + "-------------------------------------------------");
@@ -160,6 +158,7 @@ function start() {
                     });
                     break;
                 case "View All Departments":
+                    // Returns id and department name for all departments.
                     connection.query(queries.viewAllDepts(), function (err, results) {
                         if (err) throw err;
                         console.log("\n" + "-------------------------------------------------");
@@ -168,6 +167,7 @@ function start() {
                     });
                     break;
                 case "Add Department":
+                    // Takes in the new department name and inserts into the DB.
                     inquirer.prompt(
                         {
                             name: "dept_name",
@@ -185,8 +185,8 @@ function start() {
 
                         });
                     break;
-
                 case "Add Role":
+                    // Takes in a new role's title, salary and department and inserts into the DB.
                     inquirer.prompt([
                         {
                             name: "title",
@@ -211,16 +211,11 @@ function start() {
                                 console.log(`New Role added: ${answer.title} \n`);
                                 start();
                             });
-
-
-
                         });
                     break;
                 default:
                     connection.end();
             }
-
-
         });
 }
 

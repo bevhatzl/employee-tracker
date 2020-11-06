@@ -1,4 +1,4 @@
-
+// To view all employees
 const viewAll = function () {
     const query =
         'SELECT employee.id, employee.first_name, employee.last_name, ' +
@@ -12,6 +12,7 @@ const viewAll = function () {
     return query;
 }
 
+// To view all employees within a particular department
 const viewAllByDept = function () {
     const query =
         'SELECT employee.id, employee.first_name, employee.last_name, ' +
@@ -26,6 +27,7 @@ const viewAllByDept = function () {
     return query;
 }
 
+// To view all roles
 const viewAllRoles = function () {
     const query =
         'SELECT role.id, role.title, role.salary, department.dept_name ' +
@@ -35,6 +37,7 @@ const viewAllRoles = function () {
     return query;
 }
 
+// To view all departments
 const viewAllDepts = function () {
     const query =
         'SELECT id, dept_name ' +
@@ -42,6 +45,7 @@ const viewAllDepts = function () {
     return query;
 }
 
+// To add a new department
 const addDept = function () {
     const query =
         'INSERT INTO department (dept_name) ' +
@@ -50,15 +54,16 @@ const addDept = function () {
     return query;
 }
 
+// To add a new role
 const addRole = function () {
     const query =
-
         'INSERT INTO role (department_id, title, salary) ' +
         'VALUES ' +
         '(?, ?, ?)';
     return query;
 }
 
+// To add a new employee
 const addEmployee = function () {
     const query =
         'INSERT INTO employee (first_name, last_name, role_id, manager_id) ' +
@@ -67,21 +72,23 @@ const addEmployee = function () {
     return query;
 }
 
+// To change an employee's role
 const updateRole = function () {
     const query =
-
         'UPDATE employee ' +
         'SET ? ' +
         'WHERE id = ?';
     return query;
 }
 
+// To remove an employee
 const removeEmp = function () {
     const query =
         'DELETE FROM employee WHERE id = ?';
     return query;
 }
 
+// To get the total utilized budget of a department
 const budgetTotal = function () {
     const query =
         'SELECT SUM(salary) from role ' +
@@ -89,8 +96,8 @@ const budgetTotal = function () {
     return query;
 }
 
+// Exporting to server.js
 module.exports = {
-
     viewAll: viewAll,
     viewAllByDept: viewAllByDept,
     viewAllRoles: viewAllRoles,
