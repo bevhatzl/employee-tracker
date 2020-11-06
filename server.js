@@ -35,10 +35,13 @@ function start() {
 
             switch (answer.action) {
                 case "View All Employees":
-
-                    queries.viewAll();
+                    connection.query(queries.viewAll(), function (err, results) {
+                        if (err) throw err;
+                        console.log(results);
+                    });
                     start();
                     break;
+
                 case "View All Employees by Department":
 
                     break;
@@ -69,3 +72,7 @@ function start() {
 //     if (err) throw err;
 //     console.log(data);
 // });
+
+// function queryConnect(option) {
+
+// }

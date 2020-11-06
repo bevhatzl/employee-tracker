@@ -1,6 +1,10 @@
+
 const viewAll = function () {
-    return console.log("View all");
+    return "SELECT * FROM employee";
 }
+
+
+
 
 module.exports = {
 
