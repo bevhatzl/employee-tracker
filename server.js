@@ -143,7 +143,7 @@ function start() {
                                 console.log("\n" + "-------------------------------------------------");
                                 // To convert from the object to a string
                                 const result = JSON.stringify(results[0]["SUM(salary)"]);
-                                console.log(`The total utilized budget of that department is: ${result}`);
+                                console.log(`The total utilized budget of that department is: $${result}`);
                                 start();
                             });
                         });
