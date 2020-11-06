@@ -45,7 +45,21 @@ function start() {
                     break;
 
                 case "View All Employees by Department":
+                    inquirer.prompt({
+                        name: "department",
+                        type: "list",
+                        message: "Which department?",
+                        choices: ["Human Resources", "IT", "Finance", "Product Support"]
+                    })
+                        .then(function (answer) {
+                            connection.query(queries.viewAllByDept(), answer.department, function (err, results) {
+                                if (err) throw err;
+                                console.log("\n" + "----------------------------------------------");
+                                console.table(results);
+                                start();
+                            });
 
+                        });
                     break;
                 case "View All Employees by Manager":
                     break;
