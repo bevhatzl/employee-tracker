@@ -29,7 +29,7 @@ function start() {
             name: "action",
             type: "list",
             message: "What would you like to do?",
-            choices: ["View All Employees", "View All Employees by Department", "View All Employees by Manager", "Add Employee", "Remove Employee", "Update Employee Role", "Update Employee Manager", "View All Roles", "View All Departments"]
+            choices: ["View All Employees", "View All Employees by Department", "View All Employees by Manager", "Add Employee", "Remove Employee", "Update Employee Role", "Update Employee Manager", "View All Roles", "View All Departments", "Add Department"]
         })
         .then(function (answer) {
 
@@ -87,6 +87,24 @@ function start() {
                         console.table(results);
                         start();
                     });
+                    break;
+                case "Add Department":
+                    inquirer.prompt(
+                        {
+                            name: "dept_name",
+                            type: "input",
+                            message: "What is the name of the new department?"
+                        }
+                    )
+                        .then(function (answer) {
+                            connection.query(queries.addDept(), answer.dept_name, function (err, results) {
+                                if (err) throw err;
+                                console.log("\n" + "-------------------------------------------------");
+                                console.log(`New department added: ${answer.dept_name}`);
+                                start();
+                            });
+
+                        });
                     break;
                 default:
                     connection.end();

@@ -42,10 +42,19 @@ const viewAllDepts = function () {
     return query;
 }
 
+const addDept = function () {
+    const query =
+        'INSERT INTO department (dept_name) ' +
+        'VALUES ' +
+        '(?)';
+    return query;
+}
+
 module.exports = {
 
     viewAll: viewAll,
     viewAllByDept: viewAllByDept,
     viewAllRoles: viewAllRoles,
-    viewAllDepts: viewAllDepts
+    viewAllDepts: viewAllDepts,
+    addDept: addDept
 };
