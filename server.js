@@ -37,9 +37,11 @@ function start() {
                 case "View All Employees":
                     connection.query(queries.viewAll(), function (err, results) {
                         if (err) throw err;
-                        console.log(results);
+                        console.log("\n" + "----------------------------------------------");
+                        console.table(results);
+                        start();
                     });
-                    start();
+
                     break;
 
                 case "View All Employees by Department":
