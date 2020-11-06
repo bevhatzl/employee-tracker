@@ -67,6 +67,15 @@ const addEmployee = function () {
     return query;
 }
 
+const updateRole = function () {
+    const query =
+
+        'UPDATE employee ' +
+        'SET ? ' +
+        'WHERE id = ?';
+    return query;
+}
+
 module.exports = {
 
     viewAll: viewAll,
@@ -75,5 +84,6 @@ module.exports = {
     viewAllDepts: viewAllDepts,
     addDept: addDept,
     addRole: addRole,
-    addEmployee: addEmployee
+    addEmployee: addEmployee,
+    updateRole: updateRole
 };

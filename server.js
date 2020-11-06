@@ -99,6 +99,29 @@ function start() {
                 case "Remove Employee":
                     break;
                 case "Update Employee Role":
+                    inquirer.prompt([
+                        {
+                            name: "emp_id",
+                            type: "input",
+                            message: "What is the id of the employee to update?"
+                        },
+                        {
+                            name: "new_role_id",
+                            type: "input",
+                            message: "What is the id of the new role?"
+                        }]
+                    )
+                        .then(function (answer) {
+                            connection.query(queries.updateRole(), [{ role_id: answer.new_role_id }, answer.emp_id], function (err, results) {
+                                if (err) throw err;
+                                console.log("\n" + "-------------------------------------------------");
+                                console.log(`The employee's role has been updated. \n`);
+                                start();
+                            });
+
+                        });
+                    break;
+
                     break;
                 case "Update Employee Manager":
                     break;
