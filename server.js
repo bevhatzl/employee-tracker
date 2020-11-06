@@ -29,7 +29,7 @@ function start() {
             name: "action",
             type: "list",
             message: "What would you like to do?",
-            choices: ["View All Employees", "View All Employees by Department", "View All Employees by Manager", "Add Employee", "Remove Employee", "Update Employee Role", "Update Employee Manager", "View All Roles", "View All Departments", "Add Department"]
+            choices: ["View All Employees", "View All Employees by Department", "View All Employees by Manager", "Add Employee", "Remove Employee", "Update Employee Role", "Update Employee Manager", "View All Roles", "View All Departments", "Add Department", "Add Role"]
         })
         .then(function (answer) {
 
@@ -47,9 +47,8 @@ function start() {
                 case "View All Employees by Department":
                     inquirer.prompt({
                         name: "department",
-                        type: "list",
-                        message: "Which department?",
-                        choices: ["Human Resources", "IT", "Finance", "Product Support"]
+                        type: "input",
+                        message: "Please enter the department id:"
                     })
                         .then(function (answer) {
                             connection.query(queries.viewAllByDept(), answer.department, function (err, results) {
@@ -100,9 +99,40 @@ function start() {
                             connection.query(queries.addDept(), answer.dept_name, function (err, results) {
                                 if (err) throw err;
                                 console.log("\n" + "-------------------------------------------------");
-                                console.log(`New department added: ${answer.dept_name}`);
+                                console.log(`New department added: ${answer.dept_name} \n`);
                                 start();
                             });
+
+                        });
+                    break;
+
+                case "Add Role":
+                    inquirer.prompt([
+                        {
+                            name: "title",
+                            type: "input",
+                            message: "What is the title of the new role?"
+                        },
+                        {
+                            name: "salary",
+                            type: "input",
+                            message: "What is the salary of the new role?"
+                        },
+                        {
+                            name: "department",
+                            type: "input",
+                            message: "What is the department id of the new role?"
+                        }
+                    ])
+                        .then(function (answer) {
+                            connection.query(queries.addRole(), [answer.department, answer.title, answer.salary], function (err, results) {
+                                if (err) throw err;
+                                console.log("\n" + "-------------------------------------------------");
+                                console.log(`New Role added: ${answer.title} \n`);
+                                start();
+                            });
+
+
 
                         });
                     break;

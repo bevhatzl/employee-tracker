@@ -22,7 +22,7 @@ const viewAllByDept = function () {
         'ON employee.role_id = role.id ' +
         'JOIN department ' +
         'ON department.id = role.department_id ' +
-        'WHERE department.dept_name = ?';
+        'WHERE department.id = ?';
     return query;
 }
 
@@ -50,11 +50,28 @@ const addDept = function () {
     return query;
 }
 
+const addRole = function () {
+    const query =
+
+        'INSERT INTO role (department_id, title, salary) ' +
+        'VALUES ' +
+        '(?, ?, ?)';
+    return query;
+}
+
+// const findDeptId = function () {
+//     const query =
+//         'SELECT id FROM department WHERE dept_name=?';
+//     return query;
+// }
+
 module.exports = {
 
     viewAll: viewAll,
     viewAllByDept: viewAllByDept,
     viewAllRoles: viewAllRoles,
     viewAllDepts: viewAllDepts,
-    addDept: addDept
+    addDept: addDept,
+    addRole: addRole
+    // findDeptId: findDeptId
 };
