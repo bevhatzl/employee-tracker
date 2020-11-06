@@ -59,11 +59,13 @@ const addRole = function () {
     return query;
 }
 
-// const findDeptId = function () {
-//     const query =
-//         'SELECT id FROM department WHERE dept_name=?';
-//     return query;
-// }
+const addEmployee = function () {
+    const query =
+        'INSERT INTO employee (first_name, last_name, role_id, manager_id) ' +
+        'VALUES ' +
+        '(?, ?, ?, ?)';
+    return query;
+}
 
 module.exports = {
 
@@ -72,6 +74,6 @@ module.exports = {
     viewAllRoles: viewAllRoles,
     viewAllDepts: viewAllDepts,
     addDept: addDept,
-    addRole: addRole
-    // findDeptId: findDeptId
+    addRole: addRole,
+    addEmployee: addEmployee
 };

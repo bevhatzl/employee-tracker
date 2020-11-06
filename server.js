@@ -63,8 +63,39 @@ function start() {
                 case "View All Employees by Manager":
                     break;
                 case "Add Employee":
+                    inquirer.prompt([
+                        {
+                            name: "first_name",
+                            type: "input",
+                            message: "What is the first name of the new employee?"
+                        },
+                        {
+                            name: "last_name",
+                            type: "input",
+                            message: "What is the last name of the new employee?"
+                        },
+                        {
+                            name: "role_id",
+                            type: "input",
+                            message: "What is the role id of the new employee?"
+                        },
+                        {
+                            name: "manager_id",
+                            type: "input",
+                            message: "What is the manager id of the new employee?"
+                        }]
+                    )
+                        .then(function (answer) {
+                            connection.query(queries.addEmployee(), [answer.first_name, answer.last_name, answer.role_id, answer.manager_id], function (err, results) {
+                                if (err) throw err;
+                                console.log("\n" + "-------------------------------------------------");
+                                console.log(`New Employee added: ${answer.first_name} ${answer.last_name} \n`);
+                                start();
+                            });
 
+                        });
                     break;
+
                 case "Remove Employee":
                     break;
                 case "Update Employee Role":
