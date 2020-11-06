@@ -29,7 +29,7 @@ function start() {
             name: "action",
             type: "list",
             message: "What would you like to do?",
-            choices: ["View All Employees", "View All Employees by Department", "View All Employees by Manager", "Add Employee", "Remove Employee", "Update Employee Role", "Update Employee Manager", "View All Roles"]
+            choices: ["View All Employees", "View All Employees by Department", "View All Employees by Manager", "Add Employee", "Remove Employee", "Update Employee Role", "Update Employee Manager", "View All Roles", "View All Departments"]
         })
         .then(function (answer) {
 
@@ -37,7 +37,7 @@ function start() {
                 case "View All Employees":
                     connection.query(queries.viewAll(), function (err, results) {
                         if (err) throw err;
-                        console.log("\n" + "----------------------------------------------");
+                        console.log("\n" + "------------------------------------------------------------------------------------------------------");
                         console.table(results);
                         start();
                     });
@@ -54,7 +54,7 @@ function start() {
                         .then(function (answer) {
                             connection.query(queries.viewAllByDept(), answer.department, function (err, results) {
                                 if (err) throw err;
-                                console.log("\n" + "----------------------------------------------");
+                                console.log("\n" + "--------------------------------------------------------------------------------------");
                                 console.table(results);
                                 start();
                             });
@@ -73,6 +73,20 @@ function start() {
                 case "Update Employee Manager":
                     break;
                 case "View All Roles":
+                    connection.query(queries.viewAllRoles(), function (err, results) {
+                        if (err) throw err;
+                        console.log("\n" + "-------------------------------------------------");
+                        console.table(results);
+                        start();
+                    });
+                    break;
+                case "View All Departments":
+                    connection.query(queries.viewAllDepts(), function (err, results) {
+                        if (err) throw err;
+                        console.log("\n" + "-------------------------------------------------");
+                        console.table(results);
+                        start();
+                    });
                     break;
                 default:
                     connection.end();
@@ -82,13 +96,3 @@ function start() {
         });
 }
 
-
-// // for testing
-// connection.query("SELECT * FROM department", function (err, data) {
-//     if (err) throw err;
-//     console.log(data);
-// });
-
-// function queryConnect(option) {
-
-// }
