@@ -133,10 +133,6 @@ function start() {
                         for (i = 0; i < res.length; i++) {
                             empChoices.push(res[i].first_name + " " + res[i].last_name);
                         }
-
-
-
-
                         inquirer.prompt([
                             {
                                 name: "emp_id",
@@ -154,7 +150,6 @@ function start() {
                                 const splitName = answer.emp_id.split(" ");
                                 const firstN = splitName[0];
                                 const lastN = splitName[1];
-
                                 connection.query(queries.updateRole(), [{ role_id: answer.new_role_id }, firstN, lastN], function (err, results) {
                                     if (err) throw err;
                                     console.log("\n" + "-------------------------------------------------");
@@ -162,7 +157,6 @@ function start() {
                                     start();
                                 });
                             });
-
                     });
                     break;
                 case "View Utilized Budget of Department":
