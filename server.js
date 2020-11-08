@@ -42,20 +42,29 @@ function start() {
                     });
                     break;
                 case "View All Employees by Department":
-                    // Takes in a department id and returns employee name, id, title, manager id, department name and salary just for employees in that department.
-                    inquirer.prompt({
-                        name: "department",
-                        type: "input",
-                        message: "Please enter the department id:"
-                    })
-                        .then(function (answer) {
-                            connection.query(queries.viewAllByDept(), answer.department, function (err, results) {
-                                if (err) throw err;
-                                console.log("\n" + "--------------------------------------------------------------------------------------");
-                                console.table(results);
-                                start();
+                    // Takes in a department name and returns employee name, id, title, manager id, department name and salary just for employees in that department.
+                    connection.query('SELECT dept_name FROM department', (err, res) => {
+                        if (err) throw err;
+                        const deptArray = [];
+                        for (i = 0; i < res.length; i++) {
+                            deptArray.push(res[i].dept_name);
+
+                        }
+                        inquirer.prompt({
+                            name: "department",
+                            type: "list",
+                            message: "Please select the department:",
+                            choices: deptArray
+                        })
+                            .then(function (answer) {
+                                connection.query(queries.viewAllByDept(), answer.department, function (err, results) {
+                                    if (err) throw err;
+                                    console.log("\n" + "--------------------------------------------------------------------------------------");
+                                    console.table(results);
+                                    start();
+                                });
                             });
-                        });
+                    });
                     break;
                 case "Add Employee":
                     // Takes new employee name, role id and manager id and inserts to the DB.
@@ -91,19 +100,30 @@ function start() {
                         });
                     break;
                 case "Remove Employee":
-                    // Takes in employee id and deletes the employee from the DB.
-                    inquirer.prompt({
-                        name: "emp_id",
-                        type: "input",
-                        message: "Please enter the id of the employee to remove:"
-                    })
-                        .then(function (answer) {
-                            connection.query(queries.removeEmp(), answer.emp_id, function (err, results) {
-                                if (err) throw err;
-                                console.log(`Employee has been removed.`);
-                                start();
+                    // Takes in employee and deletes the employee from the DB. The first query gets the list of employees to display.
+                    connection.query('SELECT first_name, last_name FROM employee', (err, res) => {
+                        if (err) throw err;
+                        const empChoices = [];
+                        for (i = 0; i < res.length; i++) {
+                            empChoices.push(res[i].first_name + " " + res[i].last_name);
+                        }
+                        inquirer.prompt({
+                            name: "emp_id",
+                            type: "list",
+                            message: "Please select the employee to remove:",
+                            choices: empChoices
+                        })
+                            .then(function (answer) {
+                                const splitName = answer.emp_id.split(" ");
+                                const firstN = splitName[0];
+                                const lastN = splitName[1];
+                                connection.query(queries.removeEmp(), [firstN, lastN], function (err, results) {
+                                    if (err) throw err;
+                                    console.log(`Employee has been removed.`);
+                                    start();
+                                });
                             });
-                        });
+                    })
                     break;
                 case "Update Employee Role":
                     // Takes in employee id and the new role id for the employee and updates the role.

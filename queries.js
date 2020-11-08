@@ -23,7 +23,7 @@ const viewAllByDept = function () {
         'ON employee.role_id = role.id ' +
         'JOIN department ' +
         'ON department.id = role.department_id ' +
-        'WHERE department.id = ?';
+        'WHERE department.dept_name = ?';
     return query;
 }
 
@@ -84,7 +84,8 @@ const updateRole = function () {
 // To remove an employee
 const removeEmp = function () {
     const query =
-        'DELETE FROM employee WHERE id = ?';
+        'DELETE FROM employee WHERE employee.first_name = ? ' +
+        'AND employee.last_name = ?';
     return query;
 }
 
