@@ -36,7 +36,7 @@ This is a Node CLI which will give the user options to view, add, update or remo
 ![Screenshot of CLI prompt showing displayed data](/media/image1.png)
 
 ## Video
-<p>Find the link to the video demo here: (https://drive.google.com/file/d/1MAA5_0NUYIco4eA7FgRMxSdejMYj1UFD/view)</p>
+<p>Find the link to the video demo here: (https://drive.google.com/file/d/1llnN10K5jY0l_ydOrOVzWGfrMjcsiarI/view)</p>
 
 ## Sample
 <p>Find the link to the database schema here: (https://github.com/bevhatzl/employee-tracker/blob/main/db/emp_trackerDB.sql) </p>
