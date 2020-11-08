@@ -11,7 +11,7 @@ This is a Node CLI which will give the user options to view, add, update or remo
 * [Author](#author)
 
 ## Instructions
-<p>Type Node server.js to run the application. You are provided with a list of options you may perform. Select from the list and you may either view the data stored in the database or depending on your option you may see further prompts for information to add or employee id details to update or remove.</p>
+<p>Type "npm run start" to run the application. You are provided with a list of options you may perform. Select from the list and you may either view the data stored in the database or depending on your option you may see further prompts for information to add or employee id details to update or remove.</p>
 <p>The list of actions you can perform are as follows:</p>
 <ul>
     <li>View All Employees - All employees are listed along with their details.</li>
