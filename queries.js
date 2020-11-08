@@ -77,7 +77,7 @@ const updateRole = function () {
     const query =
         'UPDATE employee ' +
         'SET ? ' +
-        'WHERE id = ?';
+        'WHERE first_name = ? AND last_name = ?';
     return query;
 }
 

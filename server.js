@@ -126,27 +126,44 @@ function start() {
                     })
                     break;
                 case "Update Employee Role":
-                    // Takes in employee id and the new role id for the employee and updates the role.
-                    inquirer.prompt([
-                        {
-                            name: "emp_id",
-                            type: "input",
-                            message: "What is the id of the employee to update?"
-                        },
-                        {
-                            name: "new_role_id",
-                            type: "input",
-                            message: "What is the id of the new role?"
-                        }]
-                    )
-                        .then(function (answer) {
-                            connection.query(queries.updateRole(), [{ role_id: answer.new_role_id }, answer.emp_id], function (err, results) {
-                                if (err) throw err;
-                                console.log("\n" + "-------------------------------------------------");
-                                console.log(`The employee's role has been updated. \n`);
-                                start();
+                    // Takes in employee and the new role for the employee and updates the role.
+                    connection.query('SELECT first_name, last_name FROM employee', (err, res) => {
+                        if (err) throw err;
+                        const empChoices = [];
+                        for (i = 0; i < res.length; i++) {
+                            empChoices.push(res[i].first_name + " " + res[i].last_name);
+                        }
+
+
+
+
+                        inquirer.prompt([
+                            {
+                                name: "emp_id",
+                                type: "list",
+                                message: "What is the employee to update?",
+                                choices: empChoices
+                            },
+                            {
+                                name: "new_role_id",
+                                type: "input",
+                                message: "What is the id of the new role?"
+                            }]
+                        )
+                            .then(function (answer) {
+                                const splitName = answer.emp_id.split(" ");
+                                const firstN = splitName[0];
+                                const lastN = splitName[1];
+
+                                connection.query(queries.updateRole(), [{ role_id: answer.new_role_id }, firstN, lastN], function (err, results) {
+                                    if (err) throw err;
+                                    console.log("\n" + "-------------------------------------------------");
+                                    console.log(`The employee's role has been updated. \n`);
+                                    start();
+                                });
                             });
-                        });
+
+                    });
                     break;
                 case "View Utilized Budget of Department":
                     // Takes in department id and sums the salaries of all employees in that department.
