@@ -66,9 +66,11 @@ const addRole = function () {
 // To add a new employee
 const addEmployee = function () {
     const query =
-        'INSERT INTO employee (first_name, last_name, role_id, manager_id) ' +
-        'VALUES ' +
-        '(?, ?, ?, ?)';
+        'INSERT INTO employee ' +
+        '(first_name, last_name, role_id, manager_id) ' +
+        'VAlUES (?, ?, ' +
+        '(SELECT id FROM (SELECT id from role WHERE title = ?) as r), ' +
+        '(SELECT id FROM (SELECT id FROM employee WHERE first_name = ? AND last_name = ?) as e))';
     return query;
 }
 

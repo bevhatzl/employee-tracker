@@ -7,6 +7,7 @@ This is a Node CLI which will give the user options to view, add, update or remo
 * [Screenshots](#screenshots)
 * [Video of app](#video)
 * [Sample](#sample)
+* [Future Version](#future-version)
 * [Author](#author)
 
 ## Instructions
@@ -40,6 +41,9 @@ This is a Node CLI which will give the user options to view, add, update or remo
 ## Sample
 <p>Find the link to the database schema here: (https://github.com/bevhatzl/employee-tracker/blob/main/db/emp_trackerDB.sql) </p>
 <p>This sample data is here: (https://github.com/bevhatzl/employee-tracker/blob/main/db/seed.sql)</p>
+
+## Future Version
+<p>Future versions will fix the bug when adding a new employee as a manager. It should allow to select department. Will also fix the bug which allows you to add manager to a new employee which is a manager. Also will add a list to the update role option instead of asking for the role ID.</p>
 
 ## Author
 Beverley Hatzl 2020

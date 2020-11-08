@@ -6,6 +6,9 @@ require('dotenv').config();
 // Importing from queries.js file
 const queries = require("./queries.js");
 
+const roleArray = [];
+const employeeArray = [];
+
 // Using variable names for user and password, using the dotenv package
 const connection = mysql.createConnection({
     host: "localhost",
@@ -68,36 +71,78 @@ function start() {
                     break;
                 case "Add Employee":
                     // Takes new employee name, role id and manager id and inserts to the DB.
-                    inquirer.prompt([
-                        {
-                            name: "first_name",
-                            type: "input",
-                            message: "What is the first name of the new employee?"
-                        },
-                        {
-                            name: "last_name",
-                            type: "input",
-                            message: "What is the last name of the new employee?"
-                        },
-                        {
-                            name: "role_id",
-                            type: "input",
-                            message: "What is the role id of the new employee?"
-                        },
-                        {
-                            name: "manager_id",
-                            type: "input",
-                            message: "What is the manager id of the new employee?"
-                        }]
-                    )
-                        .then(function (answer) {
-                            connection.query(queries.addEmployee(), [answer.first_name, answer.last_name, answer.role_id, answer.manager_id], function (err, results) {
-                                if (err) throw err;
-                                console.log("\n" + "-------------------------------------------------");
-                                console.log(`New Employee added: ${answer.first_name} ${answer.last_name} \n`);
-                                start();
-                            });
+                    // New Promise to get the list of roles
+                    let p = new Promise((resolve, reject) => {
+                        connection.query('SELECT DISTINCT title FROM role', function (err, results) {
+                            if (err) throw err;
+                            if (results) {
+                                for (i = 0; i < results.length; i++) {
+                                    roleArray.push(results[i].title);
+                                }
+                                resolve(results)
+                            } else {
+                                reject('Failed')
+                            }
                         });
+                    })
+                    p.then((promiseResult) => {
+                        // New promise to get the list of employees
+                        let managerPromise = new Promise((resolve, reject) => {
+                            connection.query('SELECT first_name, last_name FROM employee', function (err, results2) {
+                                if (err) throw err;
+                                if (results2) {
+                                    for (i = 0; i < results2.length; i++) {
+                                        employeeArray.push(results2[i].first_name + " " + results2[i].last_name);
+                                    }
+                                    resolve(results2)
+                                } else {
+                                    reject('Failed')
+                                }
+                            });
+                        })
+                        // After the 2 queries retrieved the 2 lists...
+                        managerPromise.then((managerPResult) => {
+                            inquirer.prompt([
+                                {
+                                    name: "first_name",
+                                    type: "input",
+                                    message: "What is the first name of the new employee?"
+                                },
+                                {
+                                    name: "last_name",
+                                    type: "input",
+                                    message: "What is the last name of the new employee?"
+                                },
+                                {
+                                    name: "role_id",
+                                    type: "list",
+                                    message: "What is the role of the new employee?",
+                                    choices: roleArray
+                                },
+                                {
+                                    name: "manager_id",
+                                    type: "list",
+                                    message: "What is the manager of the new employee?",
+                                    choices: employeeArray
+                                }]
+                            )
+                                .then(function (answer) {
+                                    const splitManName = answer.manager_id.split(" ");
+                                    const manFirstN = splitManName[0];
+                                    const manLastN = splitManName[1];
+                                    connection.query(queries.addEmployee(), [answer.first_name, answer.last_name, answer.role_id, manFirstN, manLastN], function (err, results) {
+                                        if (err) throw err;
+                                        console.log("\n" + "-------------------------------------------------");
+                                        console.log(`New Employee added: ${answer.first_name} ${answer.last_name} \n`);
+                                        start();
+                                    });
+                                });
+                        }).catch((managerPResult) => {
+                            console.log(managerPResult)
+                        })
+                    }).catch((promiseResult) => {
+                        console.log(promiseResult);
+                    })
                     break;
                 case "Remove Employee":
                     // Takes in employee and deletes the employee from the DB. The first query gets the list of employees to display.
